@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta charset="UTF-8"/>
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!--<![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <title></title>
+    <style media="all" type="text/css">
+            @font-face {
+                font-family: 'Open Sans';
+                font-style: normal;
+                font-weight: 400;
+                font-display: swap;
+                src: url(https://fonts.gstatic.com/s/opensans/v18/mem8YaGs126MiZpBA-UFVZ0b.woff2) format('woff2');
+                unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+            }
+            body {
+                font-family: 'Open Sans', Verdana, sans-serif;
+                width: 100% !important;
+                height: 100%;
+                margin: 0;
+                -webkit-text-size-adjust: none;
+            }
+    </style>
+</head>
+<body bgcolor="e5e5e5"
+style="text-align: center; background-color: #e5e5e5; padding-top: 32px;">
+<center style="background-color: #fff; margin-top: 16px; max-width: 600px; width: 100%; display: block; margin-left: auto; margin-right: auto; padding-top: 32px; padding-bottom: 16px; border: 1px solid #ddd;">
+    <img style="display: block; margin: 0 auto;" src="https://i.imgur.com/IFKJpNm.jpg" alt="Logo Maida Health"/>
+    <hr color="#ebebeb" style="height: 1px; border: none; margin-top: 24px;"/>
+    <div style=" margin-left: auto; margin-right: auto; padding-left: 16px; padding-right: 16px;">
+        <p style="margin-bottom: 0; margin-top: 64px; color: rgba(0, 0, 0, 0.56);">
+            Oi <span data-th-text="${insuredName}">Fernanda</span>,
+        </p>
+        <p style="margin-bottom: 24px; margin-top: 10px; color: rgba(0, 0, 0, 0.56); line-height: 1.4;">
+            Sua consulta de urgência de <strong style="color: rgba(0, 0, 0, 0.88);" data-th-text="${specialtyName}">Clínica Médica</strong>
+            no valor de 
+            <b style="color: rgba(0, 0, 0, 0.88);">R$ <span data-th-text="${#numbers.formatDecimal(attendancePrice, 3, 'POINT', 2, 'COMMA')}">105,00</span></b> foi
+            <b style="color: rgba(0, 0, 0, 0.88);">estornada</b>.
+        </p>
+      </br>
+      </br>
+      </br>
+      </br>
+      </br>
+      </br>
+    </div>
+    <p style="text-align: center; color: #818181; margin-top: 32px;font-size:12px;">
+        maida.health®, <span data-th-text="${#dates.year(#dates.createNow())}">2020</span>. Todos os direitos reservados.
+    </p>
+</center>
+</body>
+</html>

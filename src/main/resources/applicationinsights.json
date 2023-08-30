@@ -1,0 +1,10 @@
+{
+    "role": {
+        "name": "Hapvida.Digital.Telehealth.Client.Api"
+      },
+    "instrumentation": {
+        "logging": {
+            "level": "INFO"
+        }
+    }
+}

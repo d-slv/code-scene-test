@@ -1,0 +1,35 @@
+trigger: 
+  branches:
+    include:
+      - develop
+      - release/*
+      - hotfix/*
+  paths:
+    include:
+      - src/*
+    exclude:
+      - README.md
+
+variables:
+  - group: Nuget
+  - group: SonarQube  
+
+
+resources:  
+  repositories:
+    - repository: templates
+      type: git
+      name: Hapvida.Core.DevOps.Templates
+      ref: refs/heads/develop
+      
+jobs:
+  - job: DockerBuildImage
+    pool: 
+      name: Azure Pipelines
+    steps:
+      - checkout: self
+        persistCredentials: true
+  
+      - template: azure-pipelines/build.yaml@templates
+        parameters:
+          arguments: --build-arg NUGET_KEY=$(NUGET_KEY) --build-arg SONAR_TOKEN=$(TOKEN) --build-arg SONAR_URL="$(HOST)"

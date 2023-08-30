@@ -1,0 +1,25 @@
+{
+  "fields": [
+    {
+      "avro.java.string": "String",
+      "name": "api_key",
+      "type": "string"
+    },
+    {
+      "avro.java.string": "String",
+      "name": "chat_id",
+      "type": "string"
+    },
+    {
+      "name": "participant_uuids",
+      "type": {
+        "avro.java.string": "String",
+        "items": "string",
+        "type": "array"
+      }
+    }
+  ],
+  "name": "AddParticipantRequest",
+  "namespace": "br.com.maidahealth.telemedapi.avro",
+  "type": "record"
+}

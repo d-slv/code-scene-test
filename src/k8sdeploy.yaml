@@ -1,0 +1,126 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ___NAMESPACE___
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ___NAMESPACE___-___ENVIRONMENT___-client-api-svc
+  namespace: ___NAMESPACE___
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    dns_zone: private  
+  labels:
+    app: ___NAMESPACE___-___ENVIRONMENT___-client-api   
+    tier: api
+    version: v1
+spec:
+  type: LoadBalancer
+  ports:
+    - name: port
+      port: 80
+      targetPort: 8080
+  selector:
+    app: ___NAMESPACE___-___ENVIRONMENT___-client-api
+    tier: api
+    version: v1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ___NAMESPACE___
+  name: ___NAMESPACE___-___ENVIRONMENT___-client-api-dep
+  labels:
+    app: ___NAMESPACE___-___ENVIRONMENT___-client-api
+    tier: api
+    version: v1
+    tags.datadoghq.com/env: ___DATADOG_ENVIRONMENT___
+    tags.datadoghq.com/service: ___NAMESPACE___-___ENVIRONMENT___-client-api
+    tags.datadoghq.com/version: ___DATADOG_VERSION___
+spec:
+  selector:
+    matchLabels:
+      app: ___NAMESPACE___-___ENVIRONMENT___-client-api
+      tier: api
+      version: v1
+  replicas: ___REPLICAS___
+  template:
+    metadata:
+      labels:
+        app: ___NAMESPACE___-___ENVIRONMENT___-client-api
+        tier: api
+        version: v1
+        tags.datadoghq.com/env: ___DATADOG_ENVIRONMENT___
+        tags.datadoghq.com/service: ___NAMESPACE___-___ENVIRONMENT___-client-api
+        tags.datadoghq.com/version: ___DATADOG_VERSION___
+        admission.datadoghq.com/enabled: "true"
+      annotations:
+        admission.datadoghq.com/java-lib.version: v1.19.1
+    spec:
+      containers:
+        - name: ___NAMESPACE___-___ENVIRONMENT___-client-api
+          image: '___ACR___/hap/maida/telemed/client-api:___BUILD_NUMBER___'
+          env:
+            - name: JAVA_OPTS
+              value: "___JAVA_OPTS___"
+            - name: ENV
+              value: "___ENVIRONMENT___"          
+            - name: DB_HOST
+              value: "___DB_HOST___"
+            - name: DB_PORT
+              value: "___DB_PORT___"
+            - name: DB_NAME
+              value: "___DB_NAME___"
+            - name: DB_USER
+              value: "___DB_USER___"
+            - name: DB_USER_PASSWORD
+              value: "___DB_USER_PASSWORD___"
+            - name: KAFKA_PASSWORD
+              value: "___KAFKA_PASSWORD___"
+            - name: KAFKA_SERVER
+              value: "___KAFKA_SERVER___"  
+            - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+              value: "___CORE_TELEMETRY_CONNECTION___"     
+            - name: DD_APPSEC_ENABLED
+              value: "true"
+            - name: DD_DBM_PROPAGATION_MODE
+              value: "full"              
+            - name: DD_AGENT_HOST
+              value: ___DATADOG_HOST___              
+            - name: DD_RUNTIME_METRICS_ENABLED
+              value: "true"
+          ports:
+            - name: http 
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /telemed/hello
+              port: 8080
+            failureThreshold: 5
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /telemed/hello
+              port: 8080
+            failureThreshold: 5
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          resources:
+            requests:
+              memory: ___ACFG_MEMORY_REQUEST___
+              cpu: ___ACFG_CPU_REQUEST___
+            limits:
+              memory: ___ACFG_MEMORY_LIMIT___
+              cpu: ___ACFG_CPU_LIMIT___
+          imagePullPolicy: Always
+          terminationMessagePath: /___ENVIRONMENT___/termination-log
+          terminationMessagePolicy: File                        
+      restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%

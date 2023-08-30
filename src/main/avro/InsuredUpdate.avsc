@@ -1,0 +1,22 @@
+{
+  "namespace": "br.com.maidahealth.telemedapi.avro",
+  "type": "record",
+  "name": "InsuredUpdate",
+  "fields": [
+    {
+      "name": "publicToken",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "cpf",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "phoneNumber",
+      "type": "string",
+      "avro.java.string": "String"
+    }
+  ]
+}
