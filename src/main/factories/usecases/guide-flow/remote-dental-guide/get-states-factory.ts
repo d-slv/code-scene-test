@@ -1,0 +1,11 @@
+import {GetStatesDentalGuide} from 'domain/usecases';
+import {RemoteGetStatesDentalGuide} from 'data/usecases';
+import {makeBFFApiUrl} from 'main/factories/http';
+import {makeAuthorizeHttpClientDecorator} from 'main/factories/decorators';
+import {guideFlowEndpoints} from '../../endpoints';
+
+export const makeGetStatesDentalGuide = (): GetStatesDentalGuide =>
+	new RemoteGetStatesDentalGuide(
+		makeBFFApiUrl(guideFlowEndpoints.odontoGuideStates),
+		makeAuthorizeHttpClientDecorator(),
+	);

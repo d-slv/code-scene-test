@@ -1,0 +1,82 @@
+image: node:latest
+pipelines:
+  # default:
+  #   - step:
+  #         name: Install and build
+  #         caches:
+  #           - node
+  #         script:
+  #           - rm -rf package-lock.json
+  #           - rm -rf node_modules
+  #           - yarn install
+  #           - yarn build 
+  # branches:
+  #   master:
+  #      - step:
+  #         name: Create artifact
+  #         script:
+  #           - git archive --format=tar.gz master -o application.tar.gz
+  #         artifacts:
+  #           - application.tar.gz
+  #      - step:
+  #         name: Production
+  #         deployment: Master
+  #         caches:
+  #           - node
+  #         script:
+  #              - pipe: atlassian/heroku-deploy:1.2.1
+  #                variables: 
+  #                  HEROKU_API_KEY: $HEROKU_API_KEY
+  #                  HEROKU_APP_NAME: $HEROKU_APP_NAME
+  #                  ZIP_FILE: 'application.tar.gz'
+  #                  WAIT: 'true'  
+    
+  # development:  
+  #   - step:
+  #       name: Create artifact
+  #       script:
+  #         - git archive --format=tar.gz development -o application.tar.gz
+  #       artifacts:
+  #         - application.tar.gz
+  #   - step:
+  #       name: Development
+  #       deployment: Test
+  #       caches:
+  #         - node
+  #       script:
+  #            - pipe: atlassian/heroku-deploy:1.2.1
+  #              variables:
+  #                HEROKU_API_KEY: $HEROKU_API_KEY
+  #                HEROKU_APP_NAME: $HEROKU_APP_NAME
+  #                ZIP_FILE: 'application.tar.gz'
+  #                WAIT: 'true' 
+  
+  custom:
+    development: 
+      - step:
+          name: Install and build
+          caches:
+            - node
+          script:
+            - rm -rf package-lock.json
+            - rm -rf node_modules
+            - yarn install
+            - yarn build 
+      - step:
+          name: Create artifact
+          script:
+            - git archive --format=tar.gz development -o application.tar.gz
+          artifacts:
+            - application.tar.gz
+      - step:
+          name: Deploy to Development
+          deployment: Development
+          caches:
+            - node
+          script:
+               - pipe: atlassian/heroku-deploy:1.2.1
+                 variables:
+                   HEROKU_API_KEY: $HEROKU_API_KEY
+                   HEROKU_APP_NAME: $HEROKU_APP_NAME
+                   ZIP_FILE: 'application.tar.gz'
+                   WAIT: 'true'

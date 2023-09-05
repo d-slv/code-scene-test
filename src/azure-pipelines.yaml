@@ -1,0 +1,36 @@
+trigger: 
+  branches:
+    include:
+      - develop
+      - hotfix/*
+      - poc
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: Hapvida.Core.DevOps.Templates
+      ref: refs/heads/develop    
+
+jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+
+      - checkout: self
+        persistCredentials: true
+      
+      - task: NodeTool@0
+        inputs:
+          versionSpec: "14.x"
+        displayName: "Install Node.js"
+        
+      - template: azure-pipelines/build-frontend.yaml@templates
+        parameters:
+          cliSources: ./src
+          sourceFolder: 'dist/'
+          script: |
+            set -x
+            yarn install
+            yarn build            

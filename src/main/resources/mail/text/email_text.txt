@@ -1,3 +1,0 @@
-[( ${name} )]
-
-You have been successfully resolved this text email template.

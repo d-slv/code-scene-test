@@ -1,0 +1,1 @@
+export {default as TabLoading} from './tab-loading'

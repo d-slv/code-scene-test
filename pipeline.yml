@@ -1,5 +1,0 @@
-pipelineType: java
-testCommand: skip
-buildcustom: true
-buildspec:
-      - mvn clean package -Dmaven.test.skip=true

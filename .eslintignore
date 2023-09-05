@@ -1,0 +1,14 @@
+node_modules
+.vscode
+coverage
+public
+server.js
+webpack.config.js
+prettier.config.js
+.eslintrc.js
+firebase.js
+webpack.common.js
+webpack.prod.js
+webpack.dev.js
+webpack.local.js
+acfc.js
